@@ -1,7 +1,6 @@
 from typing import Optional
 from fastapi import APIRouter
 from fastapi import HTTPException, status, Depends
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 from jose import jwt, JWTError
 from pydantic import BaseModel
@@ -10,21 +9,13 @@ from datetime import datetime, timedelta
 from app.utils.check_password import verify_password
 from app.utils.fake_database import fake_users_db
 from config import ALGORITHM, SECRET_KEY, ACCESS_TOKEN_EXPIRE_MINUTES
+from app.routes.models import UserCredentials, AccessToken
 
 import hashlib
 
 auth = APIRouter()
 
-o2auth_sheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
 
-class AccessToken(BaseModel):
-    access_token: str
-    token_type: str
-
-class UserCredentials(BaseModel):
-    username: str
-    password: str
-    id: int
 
 # Функция для создания JWT токена
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):

@@ -6,9 +6,10 @@ hash_obj.update(byte_pass)
 hex_pass = hash_obj.hexdigest()
 
 fake_users_db = {
-    1: {
+    "johndoe": {
         "username": "johndoe",
         "hashed_password": hex_pass,
+        "id": 1
     }
 }
 
