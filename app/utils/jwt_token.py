@@ -8,6 +8,7 @@ from config import ALGORITHM, SECRET_KEY, ACCESS_TOKEN_EXPIRE_MINUTES
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     # Токен как раз таки будет использоваться в т.ч. для идентификации пользователя
     to_encode = data.copy()
+    to_encode["sub"] = str(to_encode["sub"])
     if 'sub' not in to_encode:
         raise ValueError("Отсутствует 'id' в данных для токена")
     if expires_delta:
