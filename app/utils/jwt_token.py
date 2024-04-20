@@ -1,5 +1,5 @@
 
-from fastapi import HTTPException, status
+from fastapi import HTTPException, status, Request
 
 from jose import jwt, JWTError
 from typing import Optional
@@ -17,8 +17,8 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
     else:
-        # expire = datetime.now() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-        expire = datetime.now(timezone.utc) + timedelta(seconds=ACCESS_TOKEN_EXPIRE_MINUTES)
+        expire = datetime.now() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        # expire = datetime.now(timezone.utc) + timedelta(seconds=ACCESS_TOKEN_EXPIRE_MINUTES)
 
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
@@ -55,3 +55,31 @@ def decode_jwt_token(token: str):
             status_code=status.HTTP_403_FORBIDDEN, 
             detail="Could not validate credentials"
         ) from e
+
+
+async def get_current_user(request: Request):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+  
+    auth_header = request.headers.get("Authorization")
+    if not auth_header:
+        raise credentials_exception
+    try:
+        # Предполагается, что ваш токен начинается с 'Bearer '.
+        token = auth_header.split(" ")[1]
+        payload = decode_jwt_token(token)
+        if payload is None:
+            raise credentials_exception
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            raise credentials_exception
+        token_data = {"user_id": user_id}
+    except IndexError:
+        raise credentials_exception
+    except JWTError:
+        raise credentials_exception
+    
+    return token_data

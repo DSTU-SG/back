@@ -13,3 +13,6 @@ class CardInfo(BaseModel):
     name: str
     date: str
     cvc: str
+    
+class Vote(BaseModel):
+    text: str

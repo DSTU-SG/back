@@ -18,6 +18,8 @@ async def login(credentials: UserCredentials) -> AccessToken:
     # Здесь логика проверки учетных данных
     # Предположим, что у нас есть функция для проверки пароля
     # c хэшированным значением в базе данных
+    
+    # ПОПРАВИТЬ ЧТО ЛОГИН ЗАВИСИТ ОТ КЛЮЧА ВНУТРИ БАЗЫ ДАННЫХ
     user = fake_users_db.get(credentials.username)
     if not user or not verify_password(credentials.password, credentials.username):
         raise HTTPException(
@@ -26,8 +28,8 @@ async def login(credentials: UserCredentials) -> AccessToken:
             headers={"WWW-Authenticate": "Bearer"},
         )
     # Создаем JWT токен, если учетные данные верны
-    # access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token_expires = timedelta(seconds=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    # access_token_expires = timedelta(seconds=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": user['id']}, expires_delta=access_token_expires
     )
