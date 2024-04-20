@@ -1,35 +1,17 @@
-from typing import Optional
 from fastapi import APIRouter
 from fastapi import HTTPException, status, Depends
 
-from jose import jwt, JWTError
-from pydantic import BaseModel
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from app.utils.check_password import verify_password
 from app.utils.fake_database import fake_users_db
-from config import ALGORITHM, SECRET_KEY, ACCESS_TOKEN_EXPIRE_MINUTES
+from app.utils.jwt_token import create_access_token
 from app.routes.models import UserCredentials, AccessToken
 
-import hashlib
+from config import ACCESS_TOKEN_EXPIRE_MINUTES
 
 auth = APIRouter()
 
-
-
-# Функция для создания JWT токена
-def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
-    # Токен как раз таки будет использоваться в т.ч. для идентификации пользователя
-    to_encode = data.copy()
-    if 'id' not in to_encode:
-        raise ValueError("Отсутствует 'id' в данных для токена")
-    if expires_delta:
-        expire = datetime.now() + expires_delta
-    else:
-        expire = datetime.now() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    return encoded_jwt
 
 @auth.post("/auth/login")
 async def login(credentials: UserCredentials) -> AccessToken:
@@ -46,6 +28,6 @@ async def login(credentials: UserCredentials) -> AccessToken:
     # Создаем JWT токен, если учетные данные верны
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user['username']}, expires_delta=access_token_expires
+        data={"sub": user['id']}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}

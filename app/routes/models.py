@@ -7,4 +7,3 @@ class AccessToken(BaseModel):
 class UserCredentials(BaseModel):
     username: str
     password: str
-    id: int
