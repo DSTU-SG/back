@@ -7,3 +7,9 @@ class AccessToken(BaseModel):
 class UserCredentials(BaseModel):
     username: str
     password: str
+
+class CardInfo(BaseModel):
+    number: str
+    name: str
+    date: str
+    cvc: str

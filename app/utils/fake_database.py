@@ -14,7 +14,10 @@ fake_users_db = {
 }
 
 cards = {
-    1: {
-        "number": 11111111111,
+    "1": {
+        "number": "1111 1111 1111 1111",
+        "name": "John Doe",
+        "date": "10/25",
+        "cvc": "123",
     }
 }
