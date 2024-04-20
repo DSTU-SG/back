@@ -9,6 +9,7 @@ class Votes(Base):
     __tablename__ = "votes"
     
     id: Mapped[int] = mapped_column(primary_key=True)
+    header: Mapped[int] = mapped_column(String(100),nullable=False)
     text: Mapped[str] = mapped_column(String(400), nullable=False)
     consonants: Mapped[int] = mapped_column(nullable=False)
     dissenters: Mapped[int] = mapped_column(nullable=False)

@@ -30,6 +30,7 @@ def get_votes(authorization: str = Header(...), page: int = 1, count: int = 10, 
             
             return_votes[vote.id] = {
                 "id": vote.id,
+                "header": vote.header,
                 "text": vote.text,
                 "consonants": vote.consonants,
                 "dissenters": vote.dissenters,

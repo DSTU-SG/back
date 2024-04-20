@@ -22,12 +22,5 @@ class Config:
     DB_USER = "postgres"
     DB_PASS = "postgres"
     DB_NAME = "dgtu"
-    
-    if 'Linux' in platform.system():
-        DB_HOST = "host.docker.internal"
-    else:
-        DB_HOST = "localhost"    
-        
-    # DB_HOST = "host.docker.internal"
-    # DB_HOST = "localhost"    
+    DB_HOST = "db"  # Используйте имя сервиса Docker в качестве хоста
     DB_PORT = "5432"
