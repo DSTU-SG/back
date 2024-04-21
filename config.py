@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 
-
-import platform
+import os
 import secrets
 
 app = FastAPI()
@@ -11,8 +10,8 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
 class Config:
-    DB_USER = "postgres"
-    DB_PASS = "postgres"
-    DB_NAME = "dgtu"
-    DB_HOST = "localhost" 
-    DB_PORT = "5432"
+    DB_USER = os.getenv("DB_USER", "postgres")
+    DB_PASS = os.getenv("DB_PASS", "postgres")
+    DB_NAME = os.getenv("DB_NAME", "dgtu")
+    DB_HOST = os.getenv("DB_HOST", "localhost")
+    DB_PORT = os.getenv("DB_PORT", "5432")
