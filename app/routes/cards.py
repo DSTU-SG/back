@@ -12,7 +12,7 @@ card = APIRouter()
 
 @card.get("/card", tags=["Cards"],
           description="Требует Access Token в заголовке Authorization")
-def get_info_card(authorization: str = Header(...), current_user: dict = Depends(get_current_user)) -> CardInfo:
+def get_info_card(current_user: dict = Depends(get_current_user)) -> CardInfo:
     user_id = current_user.get("user_id")
     if not user_id in cards.keys():
         raise HTTPException(

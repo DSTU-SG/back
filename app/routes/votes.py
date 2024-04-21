@@ -14,7 +14,7 @@ from app.routes.models import Vote
 votes = APIRouter()
 
 @votes.get("/votes", tags=["Votes"], description="Требует Access Token в заголовке Authorization")
-def get_votes(authorization: str = Header(...), page: int = 1, count: int = 10, current_user: dict = Depends(get_current_user)):
+def get_votes(page: int = 1, count: int = 10, current_user: dict = Depends(get_current_user)):
     with Session(engine) as session:
         total_votes = session.query(Votes).all()
         
@@ -50,7 +50,7 @@ def post_votes(request: Vote):
     return {"200": "OK"}
 
 @votes.post("/votes/consonants/{id_}", tags=["Votes"])
-def send_vote_from_user(id_: int, authorization: str = Header(...), current_user: dict = Depends(get_current_user)):
+def send_vote_from_user(id_: int, current_user: dict = Depends(get_current_user)):
     with Session(engine) as session:
         try:            
             user_vote = UserVotes(vote_id=id_, user_id=int(current_user["user_id"]), vote=True)
@@ -61,7 +61,7 @@ def send_vote_from_user(id_: int, authorization: str = Header(...), current_user
     return {"200": "OK"}
     
 @votes.post("/votes/dissenters/{id_}", tags=["Votes"])
-def send_vote_from_user(id_: int, authorization: str = Header(...), current_user: dict = Depends(get_current_user)):
+def send_vote_from_user(id_: int, current_user: dict = Depends(get_current_user)):
     with Session(engine) as session:
         try:
             user_vote = UserVotes(vote_id=id_, user_id=int(current_user["user_id"]), vote=False)

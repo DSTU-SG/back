@@ -28,17 +28,15 @@ fictitious_people = {
 }
 
 @lines.get("/services", tags=["Services"])
-def get_servives(authorization: str = Header(...),
-                 current_user: dict = Depends(get_current_user)) -> JSONResponse:
+def get_servives(current_user: dict = Depends(get_current_user)) -> JSONResponse:
     return JSONResponse(content=fictive_services)
 
 @lines.get("/services/{service_id}", tags=["Services"])
-def get_servives_by_id(service_id: str, authorization: str = Header(...),
-                       current_user: dict = Depends(get_current_user)) -> JSONResponse:
+def get_servives_by_id(service_id: str, current_user: dict = Depends(get_current_user)) -> JSONResponse:
     return JSONResponse(content=fictitious_people)
 
 @lines.post("/services/{service_id}/{person_id}", tags=["Services"])
-def send_OMS(service_id: str, person_id: str, oms_data: OMSNumber, authorization: str = Header(...),
+def send_OMS(service_id: str, person_id: str, oms_data: OMSNumber,
              current_user: dict = Depends(get_current_user)) -> JSONResponse:
     metadata_api = {
         "oms": oms_data.oms_number,        
