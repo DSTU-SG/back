@@ -1,4 +1,7 @@
 ### Контакты
-**TG:** *t.me/legannyst*
-**VK:** *vk.com/marklav*
+
+**TG:** *https://t.me/legannyst*
+
+**VK:** *https://vk.com/marklav*
+
 **Mail:** *Leganyst@yandex.ru*
