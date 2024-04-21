@@ -44,7 +44,7 @@ def get_votes(authorization: str = Header(...), page: int = 1, count: int = 10, 
 def post_votes(request: Vote):
     text_data = request.text
     with Session(engine) as session:
-        vote = Votes(text=text_data, consonants=0, dissenters=0)
+        vote = Votes(header = request.header, text=text_data, consonants=0, dissenters=0)
         session.add(vote)
         session.commit()
     return {"200": "OK"}

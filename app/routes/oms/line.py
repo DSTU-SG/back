@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Header
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import HTTPException
 
-from pydantic import BaseModel
+from app.routes.models import OMSNumber
 
 from app.utils.jwt_token import get_current_user
 
@@ -10,8 +10,6 @@ import requests
 
 lines = APIRouter()
 
-class OMSNumber(BaseModel):
-    oms_number: str
 
 fictive_services = {
     "1": "Больница",
@@ -40,10 +38,10 @@ def get_servives_by_id(service_id: str, authorization: str = Header(...),
     return JSONResponse(content=fictitious_people)
 
 @lines.post("/services/{service_id}/{person_id}", tags=["Services"])
-def send_OMS(service_id: str, person_id: str, oms_data = OMSNumber, authorization: str = Header(...),
+def send_OMS(service_id: str, person_id: str, oms_data: OMSNumber, authorization: str = Header(...),
              current_user: dict = Depends(get_current_user)) -> JSONResponse:
     metadata_api = {
-        "oms": oms_data.oms_number,
+        "oms": oms_data.oms_number,        
         "user": current_user.get("user_id"),
         "service": service_id,
     }

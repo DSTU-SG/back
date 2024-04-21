@@ -15,5 +15,8 @@ class CardInfo(BaseModel):
     cvc: str
     
 class Vote(BaseModel):
+    header: str
     text: str
 
+class OMSNumber(BaseModel):
+    oms_number: str 
