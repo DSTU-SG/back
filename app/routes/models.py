@@ -16,3 +16,4 @@ class CardInfo(BaseModel):
     
 class Vote(BaseModel):
     text: str
+

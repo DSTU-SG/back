@@ -6,6 +6,7 @@ from pydantic import BaseModel
 
 from app.utils.jwt_token import get_current_user
 
+import requests
 
 lines = APIRouter()
 
@@ -41,4 +42,23 @@ def get_servives_by_id(service_id: str, authorization: str = Header(...),
 @lines.post("/services/{service_id}/{person_id}", tags=["Services"])
 def send_OMS(service_id: str, person_id: str, oms_data = OMSNumber, authorization: str = Header(...),
              current_user: dict = Depends(get_current_user)) -> JSONResponse:
-    pass
+    metadata_api = {
+        "oms": oms_data.oms_number,
+        "user": current_user.get("user_id"),
+        "service": service_id,
+    }
+    
+    response = requests.post(
+        "http://another-api.example.com/metadata_api",
+        json=metadata_api,
+        headers={"Content-Type": "application/json"}
+    )
+    
+    if response.status_code != 200:
+        raise HTTPException(
+            status_code=response.status_code,
+            detail=f"Failed to send metadata: {response.text}"
+        )
+    
+    return ({"200": "OK"})
+
